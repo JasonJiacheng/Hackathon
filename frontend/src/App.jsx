@@ -1,6 +1,10 @@
 import './App.css'
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import Generate from "./pages/Generate";
+import Library from "./pages/Upload";
+import Outfits from "./pages/Outfits";
+import Upload from "./pages/Library";
 
 function App() {
     return(

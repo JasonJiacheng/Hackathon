@@ -1,9 +1,12 @@
-import React from 'react'
-import {AiOutlineMenu, AiOutlineClose} from 'react-icons/ai'
+import {useState} from 'react';
+import {AiOutlineMenu, AiOutlineClose} from 'react-icons/ai';
+import {ReactTyped} from "react-typed";
+import {Link} from 'react-router'
+
 
 const Home = () => {
     // for the menu
-    const [nav, setNav] = useState(false);    
+    const [nav, setNav] = useState(false);      // when false menu button
 
 
     // Event handler
@@ -12,29 +15,46 @@ const Home = () => {
     }
   
     return (
-        // Main container
-        <div className = "">
-            {/* Button to navigate to the menu (we want to change to close) -> appears only on phones */}
-            <button onClick={handleNav} className = "block md:hidden">
-                {!nav ? <AiOutlineMenu size = {20}></AiOutlineMenu>
-                    : <AiOutlineClose size = {20}></AiOutlineClose>}
-            </button>
-
-            {/* Actual menu / Navigation menu*/}
-            <div className = {!nav ? "fixed left-[-100%]" 
-                              : "fixed left-0 top-0 h-full w-[60%] ease-in-out duration-500 bg-[#000300]"}>
-                {/* Name of the application*/}
-                <h1 className = "w-full text-3xl font-bold text-[#00df9a] m-4"> REACT. </h1>
-
-                {/* List of items in the menu */}
-                <ul className = 'p-4 uppercase'>
-                <li className = 'p-4 border-b border-gray-600'> Home </li>
-                <li className = 'p-4 border-b border-gray-600'> Company </li>
-                <li className = 'p-4 border-b border-gray-600'> Ressources </li>
-                <li className = 'p-4 border-b border-gray-600'> About </li>
-                <li className = 'p-4 border-b border-gray-600'> Contact </li>
-                </ul>
+        <div className = "relative">
+            <div className = "flex justify-end">
+                <button className = "rounded w-16 h-16 m-5 text-white hover:scale-110 duration-200 flex items-center justify-center " 
+                        onClick = {handleNav}>
+                    {!nav ? <AiOutlineMenu size = {200}/> : <AiOutlineClose size = {200}/>}
+                </button>
             </div>
+
+            <div className = "flex flex-col justify-center text-center">
+                <h1 className = "text-white text-5xl font-bold"> Application Name</h1>
+
+                {/* Live typing content */}
+                {/* <div className = "flex items-center">
+                    <ReactTyped className = "text-2xl font-bold py-2"
+                        strings = {["Don't know what to wear or just bored to pick?"]} 
+                        typeSpeed = {120}
+                        backSpeed={120}
+                        loop/>
+                </div> */}
+            </div>
+
+            {/* Menu */}
+            <ul className = {nav ? "fixed top-0 left-0 w-[60%] h-full border-r border-gray-600 bg-black transition-in-out duration-300" : 
+                                   "transition-in-out duration-300 fixed -left-full"}>
+                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+                    <Link to = "Upload" > Upload </Link> 
+                </li>
+
+                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+                    <Link to = "Library" > Library </Link> 
+                </li>
+
+                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+                    <Link to = "Outfits" > Outfits </Link> 
+                </li>
+
+                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+                    <Link to = "Generate" > Generate </Link> 
+                </li>
+            </ul>
         </div>
     );
 }
