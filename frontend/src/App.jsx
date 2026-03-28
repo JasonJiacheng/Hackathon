@@ -6,6 +6,10 @@ function App() {
     return(
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/GenerateOutfit" element={<Generate />} />
+        <Route path="/UploadedImages" element={<Library />} />
+        <Route path="/Outfits" element={<Outfits />} />
+        <Route path="/Upload" element={<Upload />} />
       </Routes>
     );
 
