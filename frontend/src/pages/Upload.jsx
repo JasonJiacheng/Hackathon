@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import {Link} from 'react-router'
+import DefaultImage from "../assets/closet.png"
 
 const Upload = () => {
   const [nav, setNav] = useState(false);
-  const [file, setFile] = useState(false);
+  const [file, setFile] = useState(null);
+  const fileUploadRef = useRef();
 
-  const handleFile = () => {};
+  // Default image
+  const [avatar, setAvatar] = useState(DefaultImage);
+
+  // Event handlers
   const handleNav = () => setNav(!nav);
 
-  return (
-    <div className="w-full h-screen bg-black">
+  const uploadImageDisplay = () => {
+    const uplaodedFile = fileUploadRef.current.files[0];
+    const cachedURL = URL.createObjectURL(uplaodedFile);
+    setAvatar(cachedURL);
+  }
 
-      {/* Left pane --> Menu button */}
+  return (
+    <div className="w-full h-screen bg-black ">
+
+      {/* Upper pane --> Menu button */}
       <div className="flex justify-between items-center p-5">
         <h1 className = "font-bold text-white text-4xl text-center flex-1"> Upload a photo and let AI do the rest </h1>
         <button
@@ -26,12 +37,13 @@ const Upload = () => {
       <div className="grid grid-cols-2 h-130">
 
         {/* Left panel */}
-        <div className="bg-black flex p-4">
-          <div className="bg-white rounded-md flex-1"></div>
+        <div className="bg-black py-4 px-8">
+          {/* <div className="bg-white rounded-md flex-1"></div> */}
+          <img src = {avatar} alt = "avatar" className = "rounded-md w-full flex-auto"></img>
         </div>
 
         {/* Right panel */}
-        <div className="bg-black p-4 grid grid-rows-2 gap-4">
+        <div className="bg-black pr-4 py-8 grid grid-rows-2 gap-4">
 
           {/* Form grid of 2 columns */}
           <div className="bg-black grid grid-cols-2 gap-4 text-white">
@@ -42,19 +54,23 @@ const Upload = () => {
           </div>
 
           {/* Upload button */}
-          <div className="flex justify-center items-center bg-black">
-            <button
-                className="rounded-md text-black bg-blue-400 font-bold text-2xl hover:scale-105 transition-transform duration-150 px-8 py-4 w-48">
-                Upload
-            </button>
+          <div className="flex flex-col justify-center items-center bg-black ">
+            <form id = "form" encType="multipart/form-data" className = "bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 transition-transform duration-300">
+                <label htmlFor="inputButton" className = "text-black font-bold text-2xl">
+                    Upload
+                </label> 
+                <input id = "inputButton" type = "file" className = "hidden" ref = {fileUploadRef} accept = "image/*" onChange={uploadImageDisplay}>
+                </input>
+            </form>
           </div>
 
         </div>
       </div>
 
         {/* Menu */}
-        <ul className = {nav ? "fixed top-0 left-0 w-[60%] h-full border-r border-gray-600 bg-black transition-in-out duration-300" : 
-                                   "transition-in-out duration-300 fixed -left-full"}>
+        <ul className={`fixed top-0 h-full w-[60%] bg-black transition-all duration-300 ease-in-out ${nav ? "left-0" : "-left-full"}`}>
+            <li className = "p-4 uppercase text-white text-4xl font-bold"> Menu: </li>
+                                    
             <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
                 <Link to = "Upload" > Upload </Link> 
             </li>
