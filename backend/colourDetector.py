@@ -171,7 +171,7 @@ def detect_dominant_colour(
 if __name__ == "__main__":
     colour = detect_dominant_colour(r"backend\brown_jumper.jpeg")
     print("Detected colour:", colour)
-    colour = detect_dominant_colour(r"backend\orange_shirt.jpeg")
+    colour = detect_dominant_colour(r"backend\orange_shirt.jpg")
     print("Detected colour:", colour)
     colour = detect_dominant_colour(r"backend\green_jumper.jpeg")
     print("Detected colour:", colour)
