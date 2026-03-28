@@ -14,7 +14,9 @@ colourNames = {
     "#a52a2a": "Brown",
     "#000000": "Black",
     "#ffffff": "White",
-    "#808080": "Grey"
+    "#808080": "Grey",
+    "#000080": "Navy",
+    "#6b6b2a": "Olive",
 }
 
 COLOUR_NAME_TO_HEX = {
@@ -29,10 +31,9 @@ COLOUR_NAME_TO_HEX = {
     "black":  "#000000",
     "white":  "#ffffff",
     "grey":   "#808080",
-    "navy":   "#0000ff",
-    "olive":  "#808080",
+    "navy":   "#000080",
+    "olive":  "#6b6b2a",
 }
-
 
 
 def _rgb_to_hsv_pixel(rgb: tuple) -> tuple:

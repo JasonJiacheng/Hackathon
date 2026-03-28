@@ -9,7 +9,7 @@ import sys
 # Config
 # ---------------------------------------------------------------------------
 MODEL_PATH  = r"backend\clothing_model_best.pth"
-IMAGE_PATH  = r"backend\grey_jeans.jpeg"  # ← change this
+IMAGE_PATH  = r"backend\grey_jeans.jpeg"  
 CLASS_NAMES = ['dress', 'outwear', 'shirt', 'shoes', 'shorts', 'skirt', 't-shirt', 'trousers']
 
 # ---------------------------------------------------------------------------
