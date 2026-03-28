@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import {Link} from 'react-router'
-import DefaultImage from "../assets/closet.png"
+import {Link} from 'react-router';
+import DefaultImage from "../assets/closet.png";
 
 const Upload = () => {
   const [nav, setNav] = useState(false);
@@ -72,19 +72,19 @@ const Upload = () => {
             <li className = "p-4 uppercase text-white text-4xl font-bold"> Menu: </li>
                                     
             <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                <Link to = "Upload" > Upload </Link> 
+                <Link to = "/Upload" > Upload </Link> 
             </li>
 
             <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                <Link to = "Library" > Library </Link> 
+                <Link to = "/Library" > Library </Link> 
             </li>
 
             <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                <Link to = "Outfits" > Outfits </Link> 
+                <Link to = "/Outfits" > Outfits </Link> 
             </li>
 
             <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                <Link to = "Generate" > Generate </Link> 
+                <Link to = "/Generate" > Generate </Link> 
             </li>
         </ul>
       
