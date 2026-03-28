@@ -5,7 +5,7 @@ coloursOwned = []
 primaryColoursOwned = []
 secondaryColoursOwned = []
 tertiaryColoursOwned = []
-colours = {
+colourPalette = {
     "red": "#FF0000",
     "yellow": "#FFFF00",
     "blue": "#0000FF",
@@ -39,3 +39,13 @@ def isSecondary(colour):
     else:
         return False
     
+def getColoursNotOwned(coloursOwned):
+    coloursNotOwned = []
+    for dictColour in colourPalette:
+        isOwned = False
+        for colour in coloursOwned:
+            if colour == dictColour:
+                isOwned = True
+        if not isOwned:
+            coloursNotOwned.append(dictColour)
+    return coloursNotOwned 
