@@ -14,7 +14,7 @@ const Home = () => {
     }
   
     return (
-        <div className = "relative">
+        <div className = "relative bg-black">
             <div className = "flex justify-end">
                 <button className = "rounded w-16 h-16 m-5 text-white hover:scale-110 duration-200 flex items-center justify-center " 
                         onClick = {handleNav}>
