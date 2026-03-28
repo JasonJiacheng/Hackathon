@@ -1,0 +1,84 @@
+Color_1_Hex,Color_1_Name,Color_2_Hex,Color_2_Name,Style_Category,Description
+#000000,Black,#ffffff,White,Classic,Timeless black and white contrast
+#000000,Black,#ff0000,Red,Bold,Classic red and black — powerful and striking
+#000000,Black,#ffc0cb,Pink,Chic,Black and pink — feminine and modern
+#000000,Black,#808080,Grey,Monochrome,Black and grey tonal layering
+#000000,Black,#ffff00,Yellow,Statement,"Black and yellow — high contrast, edgy"
+#000000,Black,#0000ff,Blue,Smart Casual,Black and blue — versatile everyday pairing
+#000000,Black,#800080,Purple,Elegant,Black and purple — rich and sophisticated
+#000000,Black,#ffa500,Orange,Urban,Black and orange — bold street style
+#000000,Black,#a52a2a,Brown,Earthy,Black and brown — grounded and classic
+#000000,Black,#00ff00,Green,Bold,Black and green — strong statement pairing
+#ffffff,White,#0000ff,Blue,Classic,White and blue — crisp and nautical
+#ffffff,White,#ff0000,Red,Sporty,White and red — clean and energetic
+#ffffff,White,#ffc0cb,Pink,Soft,White and pink — fresh and feminine
+#ffffff,White,#808080,Grey,Minimal,White and grey — clean minimalist look
+#ffffff,White,#a52a2a,Brown,Casual,White and brown — relaxed and natural
+#ffffff,White,#800080,Purple,Fresh,White and purple — bright and elegant
+#ffffff,White,#ffa500,Orange,Summer,White and orange — vibrant warm weather look
+#ffffff,White,#00ff00,Green,Fresh,White and green — natural and fresh
+#ffffff,White,#ffff00,Yellow,Bright,White and yellow — sunny and cheerful
+#808080,Grey,#0000ff,Blue,Smart,Grey and blue — office-ready pairing
+#808080,Grey,#ff0000,Red,Contrast,Grey and red — muted base with a pop of colour
+#808080,Grey,#ffc0cb,Pink,Soft,Grey and pink — subtle and stylish
+#808080,Grey,#800080,Purple,Cool,Grey and purple — cool-toned sophisticated look
+#808080,Grey,#ffff00,Yellow,Edgy,Grey and yellow — unexpected but striking
+#808080,Grey,#a52a2a,Brown,Earthy,Grey and brown — natural tonal pairing
+#808080,Grey,#ffa500,Orange,Warm,Grey and orange — balanced warm contrast
+#808080,Grey,#00ff00,Green,Fresh,Grey and green — muted meets vibrant
+#0000ff,Blue,#ff0000,Red,Bold,Blue and red — primary colour power pairing
+#0000ff,Blue,#ffffff,White,Classic,Blue and white — nautical and clean
+#0000ff,Blue,#ffa500,Orange,Complementary,Blue and orange — complementary colour pairing
+#0000ff,Blue,#a52a2a,Brown,Casual,Blue and brown — classic denim-inspired pairing
+#0000ff,Blue,#808080,Grey,Smart Casual,Blue and grey — polished everyday look
+#0000ff,Blue,#ffc0cb,Pink,Playful,Blue and pink — fun and vibrant
+#0000ff,Blue,#ffff00,Yellow,Statement,Blue and yellow — complementary contrast
+#0000ff,Blue,#800080,Purple,Rich,Blue and purple — deep analogous pairing
+#ff0000,Red,#ffffff,White,Classic,Red and white — bold and crisp
+#ff0000,Red,#000000,Black,Dramatic,Red and black — timeless high-impact look
+#ff0000,Red,#808080,Grey,Balanced,Red and grey — vivid with neutral balance
+#ff0000,Red,#a52a2a,Brown,Earthy,Red and brown — warm autumnal tones
+#ff0000,Red,#ffc0cb,Pink,Tonal,Red and pink — tonal feminine look
+#ff0000,Red,#ffff00,Yellow,Vibrant,Red and yellow — warm primary combo
+#a52a2a,Brown,#ffffff,White,Casual,Brown and white — relaxed natural pairing
+#a52a2a,Brown,#ffff00,Yellow,Earthy,Brown and yellow — warm autumnal tones
+#a52a2a,Brown,#ffa500,Orange,Warm,Brown and orange — rich earthy palette
+#a52a2a,Brown,#00ff00,Green,Nature,Brown and green — earthy natural tones
+#a52a2a,Brown,#808080,Grey,Neutral,Brown and grey — warm meets cool neutral
+#a52a2a,Brown,#ffc0cb,Pink,Warm,Brown and pink — warm and soft pairing
+#a52a2a,Brown,#800080,Purple,Autumn,Brown and purple — deep autumnal richness
+#800080,Purple,#ffc0cb,Pink,Romantic,Purple and pink — analogous feminine pairing
+#800080,Purple,#ffff00,Yellow,Complementary,Purple and yellow — complementary colour pairing
+#800080,Purple,#ffffff,White,Elegant,Purple and white — regal and clean
+#800080,Purple,#808080,Grey,Subtle,Purple and grey — toned-down elegance
+#800080,Purple,#ffa500,Orange,Bold,Purple and orange — complementary warm contrast
+#800080,Purple,#00ff00,Green,Vivid,Purple and green — complementary jewel tones
+#ffa500,Orange,#0000ff,Blue,Complementary,Orange and blue — vibrant complementary pairing
+#ffa500,Orange,#ffffff,White,Bright,Orange and white — fresh and warm
+#ffa500,Orange,#000000,Black,Urban,Orange and black — bold urban statement
+#ffa500,Orange,#808080,Grey,Casual,Orange and grey — vivid pop with neutral base
+#ffa500,Orange,#a52a2a,Brown,Earthy,Orange and brown — warm earthy tones
+#ffa500,Orange,#ffff00,Yellow,Warm,Orange and yellow — warm analogous sunshine palette
+#ffa500,Orange,#800080,Purple,Bold,Orange and purple — daring complementary combo
+#ffc0cb,Pink,#ffffff,White,Soft,Pink and white — delicate and light
+#ffc0cb,Pink,#000000,Black,Modern,Pink and black — modern feminine edge
+#ffc0cb,Pink,#808080,Grey,Chic,Pink and grey — soft and sophisticated
+#ffc0cb,Pink,#800080,Purple,Tonal,Pink and purple — tonal analogous look
+#ffc0cb,Pink,#a52a2a,Brown,Warm,Pink and brown — warm and cozy
+#ffc0cb,Pink,#0000ff,Blue,Fun,Pink and blue — playful complementary pair
+#ffc0cb,Pink,#ffff00,Yellow,Playful,Pink and yellow — cheerful and fun
+#ffff00,Yellow,#800080,Purple,Complementary,Yellow and purple — bold complementary contrast
+#ffff00,Yellow,#000000,Black,High Contrast,Yellow and black — striking bee-inspired contrast
+#ffff00,Yellow,#0000ff,Blue,Complementary,Yellow and blue — classic complementary pairing
+#ffff00,Yellow,#a52a2a,Brown,Warm,Yellow and brown — warm natural tones
+#ffff00,Yellow,#808080,Grey,Fresh,Yellow and grey — cheerful pop on neutral base
+#ffff00,Yellow,#ffa500,Orange,Warm,Yellow and orange — warm analogous sunshine
+#ffff00,Yellow,#ffffff,White,Soft,Yellow and white — soft pastel-inspired warmth
+#00ff00,Green,#800080,Purple,Complementary,Green and purple — bold complementary pairing
+#00ff00,Green,#ffffff,White,Fresh,Green and white — fresh and natural
+#00ff00,Green,#000000,Black,Urban,Green and black — bold nature-meets-edge
+#00ff00,Green,#a52a2a,Brown,Earthy,Green and brown — natural earthy tones
+#00ff00,Green,#808080,Grey,Fresh,Green and grey — vivid freshness on a neutral
+#00ff00,Green,#0000ff,Blue,Cool,Green and blue — cool analogous tones
+#00ff00,Green,#ffff00,Yellow,Vibrant,Green and yellow — warm analogous energetic combo
+#00ff00,Green,#ffa500,Orange,Vibrant,Green and orange — warm vibrant contrast
