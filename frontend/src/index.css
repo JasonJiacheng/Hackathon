@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
 body {
-  background-color: #000; /* optional if your app is dark */
-  background-image: url("src/assets/closet.png")
+  background-color: black; /* optional if your app is dark */
 }
