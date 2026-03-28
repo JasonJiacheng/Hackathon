@@ -39,19 +39,19 @@ const Home = () => {
             <ul className = {nav ? "fixed top-0 left-0 w-[60%] h-full border-r border-gray-600 bg-black transition-in-out duration-300" : 
                                    "transition-in-out duration-300 fixed -left-full"}>
                 <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                    <Link to = "Upload" > Upload </Link> 
+                    <Link to = "/Upload" > Upload </Link> 
                 </li>
 
                 <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                    <Link to = "Library" > Library </Link> 
+                    <Link to = "/Library" > Library </Link> 
                 </li>
 
                 <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                    <Link to = "Outfits" > Outfits </Link> 
+                    <Link to = "/Outfits" > Outfits </Link> 
                 </li>
 
                 <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                    <Link to = "Generate" > Generate </Link> 
+                    <Link to = "/Generate" > Generate </Link> 
                 </li>
             </ul>
         </div>
