@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom'; // fixed import
 
-//temp test data
+// Temporary test data
 const Clothes = [
   { id: 1, name: 'Red Boots', type: 'boots', colour: '#ff0000' },
   { id: 2, name: 'Blue Jacket', type: 'jackets', colour: '#0000ff' },
@@ -14,7 +14,7 @@ const Clothes = [
   { id: 8, name: 'Brown Boots', type: 'boots', colour: '#a52a2a' },
 ];
 
-//consts
+// Constants
 const Categories = ['all', 'boots', 'hats', 'jackets', 'tops', 'trainers', 'trousers'];
 const Colours = {
   all: 'All',
@@ -43,12 +43,11 @@ const Library = () => {
     const matchesCategory = category === 'all' || item.type === category;
     const matchesColor = color === 'all' || item.colour === color;
     const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
-
     return matchesCategory && matchesColor && matchesSearch;
   });
 
   return (
-    <div className="w-full h-screen bg-black relative text-white">
+    <div className="w-full min-h-screen bg-black text-white">
       <div className="flex justify-between items-center p-5">
         <h1 className="font-bold text-4xl text-center flex-1">
           Upload a photo and let AI do the rest
@@ -62,24 +61,6 @@ const Library = () => {
         </button>
       </div>
 
-            {/* Menu */}
-      <ul className={`fixed top-0 h-full w-[60%] bg-black transition-all duration-300 ${nav ? 'left-0' : '-left-full'}`}>
-        <li className="p-4 uppercase text-4xl font-bold border-b border-gray-600">Menu:</li>
-        <li className="p-4 uppercase text-2xl border-b border-gray-600">
-          <Link to="/Upload">Upload</Link>
-        </li>
-        <li className="p-4 uppercase text-2xl border-b border-gray-600">
-          <Link to="/Library">Library</Link>
-        </li>
-        <li className="p-4 uppercase text-2xl border-b border-gray-600">
-          <Link to="/Outfits">Outfits</Link>
-        </li>
-        <li className="p-4 uppercase text-2xl border-b border-gray-600">
-          <Link to="/Generate">Generate</Link>
-        </li>
-      </ul>
-
-
       <div className="relative z-10 p-5">
         <h2 className="text-2xl mb-4 font-semibold">Library</h2>
 
@@ -88,13 +69,9 @@ const Library = () => {
             type="text"
             placeholder="Search clothes..."
             value={search}
-            //Sets search to the input
             onChange={(e) => setSearch(e.target.value)}
             className="p-2 rounded bg-black text-white border border-gray-600"
           />
-
-
-
 
           <select
             value={category}
@@ -107,8 +84,6 @@ const Library = () => {
               </option>
             ))}
           </select>
-
-
 
           <select
             value={color}
@@ -123,38 +98,57 @@ const Library = () => {
           </select>
         </div>
 
-
-
-
-
-
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {(() => {
-            if (filteredItems.length > 0) 
-              {
-              // items to display
-              return filteredItems.map(item => (
+          {filteredItems.length > 0 ? (
+            filteredItems.map(item => (
+              <div
+                key={item.id}
+                className="bg-gray-800 hover:bg-gray-700 rounded-2xl p-4 hover:scale-105 transition"
+              >
                 <div
-                  key={item.id}
-                  className= "bg-gray-800 hover:bg-gray-700 rounded-2xl p-4  hover:scale-105 transition"
-                >
-                  <div
-                    className="w-full h-32 rounded-lg mb-3"
-                    style={{ backgroundColor: item.colour }}
-                  />
-                  <h3 className="font-semibold text-lg">{item.name}</h3>
-                  <p className="text-sm text-gray-400">{item.type}</p>
-                </div>
-              ));
-            } 
-            else 
-            {
-              // No items :(
-              return <p className="text-gray-400">No items found.</p>;
-            }
-          })()}
+                  className="w-full h-32 rounded-lg mb-3"
+                  style={{ backgroundColor: item.colour }}
+                />
+                <h3 className="font-semibold text-lg">{item.name}</h3>
+                <p className="text-sm text-gray-400">{item.type}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-400">No items found.</p>
+          )}
         </div>
       </div>
+
+      {/* Menu */}
+      <ul
+        className={`fixed top-0 left-0 h-full w-full bg-black z-50 shadow-lg transition-all duration-300 ${
+          nav ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="flex justify-end p-5">
+          <button onClick={handleNav} className="text-white hover:scale-110 duration-200">
+            <AiOutlineClose size={40} />
+          </button>
+        </div>
+
+        <li className="p-4 uppercase text-white text-4xl font-bold">Menu:</li>
+
+        <li className="p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
+          <Link to="/Upload">Upload</Link>
+        </li>
+
+        <li className="p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
+          <Link to="/Library">Library</Link>
+        </li>
+
+        <li className="p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
+          <Link to="/Outfits">Outfits</Link>
+        </li>
+
+        <li className="p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
+          <Link to="/">Home</Link>
+        </li>
+      </ul>
     </div>
   );
 };

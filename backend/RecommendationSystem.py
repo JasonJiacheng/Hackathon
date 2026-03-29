@@ -10,6 +10,7 @@ from PIL import Image
 import genai  # make sure you have the Gemini SDK installed
 
 def recommend(uploads, descriptions, valid_colours):
+    # predicts type of clothing and color and gives a prompt to AI model to generate a 3D visual representation
     client = OpenAI(
         api_key=os.environ.get("OPENROUTER_API_KEY"),
         base_url="https://openrouter.ai/api/v1"

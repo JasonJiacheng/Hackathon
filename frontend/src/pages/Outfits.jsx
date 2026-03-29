@@ -24,19 +24,19 @@ const Outfits = () => {
             <ul className={`fixed top-0 h-full w-[60%] bg-black transition-all duration-300 ease-in-out ${nav ? "left-0" : "-left-full"}`}>
                 <li className = "p-4 uppercase text-white text-4xl font-bold"> Menu: </li>
                                         
-                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
                     <Link to = "/Upload" > Upload </Link> 
                 </li>
 
-                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
                     <Link to = "/Library" > Library </Link> 
                 </li>
 
-                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                    <Link to = "/Outfits" > Outfits </Link> 
+                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
+                    <Link to = "/" > Home </Link> 
                 </li>
 
-                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+                <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
                     <Link to = "/Generate" > Generate </Link> 
                 </li>
             </ul>
