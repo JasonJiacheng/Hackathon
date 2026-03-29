@@ -10,6 +10,8 @@ const Upload = () => {
   const fileUploadRef = useRef();
   const [name, setName] = useState('no-name');
   const [category, setCategory] = useState('no-category');
+  const [detectedType, setDetectedType] = useState(null);
+  const [detectedColour, setDetectedColour] = useState(null);
 
   // Default image
   const [avatar, setAvatar] = useState(DefaultImage);
@@ -42,12 +44,15 @@ const Upload = () => {
   data.append('name', name);
   data.append('category', category);
 
-  fetch('/api/upload', {
+  fetch('http://localhost:5000/api/upload', {
     method: 'POST',
     body: data
   })
   .then(res => res.json())
-  .then(data => console.log('Upload successful', data))
+  .then(data => {
+    setDetectedType(data.category);
+    setDetectedColour(data.detected_colour);
+  })
   .catch(err => console.error('Upload failed', err));
      
   }
@@ -108,7 +113,11 @@ const Upload = () => {
                 <button type="submit" className="bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 hover:bg-green-500 transition-transform duration-300 flex items-center justify-center text-black font-bold text-2xl">
                     Submit
                 </button>
-
+                {detectedType && detectedColour && (
+                  <p className="text-white text-3xl font-bold mt-4">
+                    {detectedColour} {detectedType}
+                  </p>
+)}
             
             </form>
           </div>

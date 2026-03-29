@@ -10,7 +10,7 @@ import sys
 # ---------------------------------------------------------------------------
 MODEL_PATH  = r"backend\clothing_model_best.pth"
 IMAGE_PATH  = r"backend\grey_jeans.jpeg"  
-CLASS_NAMES = ['dress', 'outwear', 'shirt', 'shoes', 'shorts', 'skirt', 't-shirt', 'trousers']
+CLASS_NAMES = ['Dress', 'Outwear', 'Shirt', 'Shoes', 'Shorts', 'Skirt', 'T-shirt', 'Trousers']
 
 # ---------------------------------------------------------------------------
 # Model — must match the architecture used during training
@@ -58,7 +58,7 @@ def predict(image_path: str) -> tuple[str, float]:
         probs         = torch.softmax(model(tensor), dim=1)[0]
         predicted_idx = probs.argmax().item()
         confidence    = probs[predicted_idx].item() * 100
-    return CLASS_NAMES[predicted_idx], confidence
+    return CLASS_NAMES[predicted_idx]
 
 # ---------------------------------------------------------------------------
 # Run

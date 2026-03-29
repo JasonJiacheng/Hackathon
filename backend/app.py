@@ -10,7 +10,7 @@ CORS(app)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-@app.route('/api/upload', methods=['POST'])
+@app.route('/api/upload', methods=['POST','GET'])
 def upload():
     if 'image' not in request.files:
         return jsonify({"error": "No image provided"}), 400
