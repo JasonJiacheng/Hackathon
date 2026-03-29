@@ -7,10 +7,10 @@ import re
 import io
 import base64
 from PIL import Image
-import genai  # make sure you have the Gemini SDK installed
+import genai  
+import requests
 
-def recommend(uploads, descriptions, valid_colours):
-    # predicts type of clothing and color and gives a prompt to AI model to generate a 3D visual representation
+def recommend(uploads, descriptions, valid_colours, is_smart): #where is_smart is a boolean variable toggled by the on/off switch in generating page 
     client = OpenAI(
         api_key=os.environ.get("OPENROUTER_API_KEY"),
         base_url="https://openrouter.ai/api/v1"
@@ -29,9 +29,11 @@ def recommend(uploads, descriptions, valid_colours):
         "Return only a Python list of tuples in the form (type of clothing, colour). "
         "Use only these types: dress, shirt, shoes, shorts, skirt, t-shirt, trousers, outerwear "
         f"and only these colours: {', '.join(valid_colours)}. "
-        "Do not include any text outside the list, no explanations, no quotes, nothing else."
+        "Do not include any text outside the list, no explanations, no quotes, nothing else. "
     )
-
+    if is_smart:
+        prompt = prompt + "Focus your outfit to match these conditions: " + getArea() + " " + getWeather(getArea())
+        
     response = client.responses.create(
         model="gpt-5",
         input=prompt
@@ -67,3 +69,23 @@ def draw_model(descriptions, outputFromOpenAI, output_file):
             image_data = base64.b64decode(part.inline_data.data)
             image = Image.open(io.BytesIO(image_data))
             image.save(output_file)
+
+def getArea():
+    response = requests.get("https://ipinfo.io/json")
+    data = response.json()
+    area = data.get("city")
+    return area
+    #returns string saying The user lives in area, and this will be added onto the prmpt of reccomendation system
+
+def getWeather(city):
+    API_KEY = "bd5e378503939ddaee76f12ad7a97608"
+    url = "https://api.openweathermap.org/data/2.5/weather"
+    parameters = {"q": city, "appid": API_KEY, "units": "metric"}
+    response = requests.get(url, params=parameters)
+    data = response.json()
+    temp = round(data["main"]["temp"])
+    desc = data["weather"][0]["main"].lower()
+    return "temperature: "+ str(temp) + " degrees, " + " description: " + desc
+
+def 
+
