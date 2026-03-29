@@ -9,17 +9,32 @@ import base64
 from PIL import Image
 import genai  
 import requests
-
-def recommend(uploads, descriptions, valid_colours, is_smart): #where is_smart is a boolean variable toggled by the on/off switch in generating page 
+from colourSuggestion import getValidColours
+def main(): #main is just for testing
+    uploads = []
+    descriptions = [("Trousers", "Blue"), ("T-shirt", "Red")]
+    recommend(uploads, descriptions, True)
+    
+def recommend(uploads, descriptions, is_smart): #is_smart is a toggle on/off switch bool
     client = OpenAI(
         api_key=os.environ.get("OPENROUTER_API_KEY"),
         base_url="https://openrouter.ai/api/v1"
     )
 
+    detected_colours = []
+
     for upload in uploads:
         type_of_clothes = predict(upload)
         colour_of_clothes = detect_dominant_colour(upload)
+
         descriptions.append((type_of_clothes, colour_of_clothes))
+        detected_colours.append(colour_of_clothes)
+        
+    valid_colours = set()
+    for col in detected_colours:
+        valid_colours.update(getValidColours(col))
+
+    valid_colours = list(valid_colours)
 
     formatted_descriptions = ", ".join([f"{t} ({c})" for t, c in descriptions])
 
@@ -31,9 +46,10 @@ def recommend(uploads, descriptions, valid_colours, is_smart): #where is_smart i
         f"and only these colours: {', '.join(valid_colours)}. "
         "Do not include any text outside the list, no explanations, no quotes, nothing else. "
     )
+
     if is_smart:
-        prompt = prompt + "Focus your outfit to match these conditions: " + getArea() + " " + getWeather(getArea())
-        
+        prompt += "Focus your outfit to match these conditions: " + getArea() + " " + getWeather(getArea())
+
     response = client.responses.create(
         model="gpt-5",
         input=prompt
@@ -41,6 +57,7 @@ def recommend(uploads, descriptions, valid_colours, is_smart): #where is_smart i
 
     raw_text = response.output_text.strip()
     match = re.search(r"\[.*\]", raw_text, re.DOTALL)
+
     if match:
         try:
             outfit_list = ast.literal_eval(match.group())
@@ -49,10 +66,10 @@ def recommend(uploads, descriptions, valid_colours, is_smart): #where is_smart i
     else:
         outfit_list = []
 
-    return outfit_list
+    return outfit_list       
 
 def draw_model(descriptions, outputFromOpenAI, output_file):
-    client = genai.Client()  
+    client = genai.Client()  # Gemini client
     prompt_text = (
         f"I have this description of an outfit: {descriptions} {outputFromOpenAI}. "
         "Draw a 3D model of this outfit on a mannequin/doll. "
@@ -86,5 +103,6 @@ def getWeather(city):
     temp = round(data["main"]["temp"])
     desc = data["weather"][0]["main"].lower()
     return "temperature: "+ str(temp) + " degrees, " + " description: " + desc
+
 
 
