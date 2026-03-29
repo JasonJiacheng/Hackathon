@@ -9,6 +9,8 @@ const app = express();
 app.use(cors());
 
 const uploadFolder = 'imagesUploaded';
+// Convert images into public urls so that we can access them (this is our port and then images)
+app.use('/images', express.static(uploadFolder));
 if (!fs.existsSync(uploadFolder)) fs.mkdirSync(uploadFolder);
 
 // port number server will be listening on
@@ -20,12 +22,10 @@ const storage = multer.diskStorage({
     cb(null, uploadFolder);        // every uploaded file goes to imagesUploaded given no errors
   },
   filename: function (req, file, cb) {
-    const name = req.body.name || 'no-name';
-    const type = req.body.category || 'no-category';
-
-    const originalName = path.extname(file.originalname);
-
-    const newName = `${name}-${type}-${originalName}`;
+    const name = req.body.name ? req.body.name.trim() : 'no-name';
+    const timeStamp = Date.now();
+    const extension = path.extname(file.originalname).toLowerCase();
+    const newName = `${name}-${timeStamp}${extension}`;
 
     cb(null, newName);
   }
@@ -51,4 +51,17 @@ app.post('/api/upload', upload.single('image'), (req, res) => {   // req contain
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+});
+
+// Create an API endpoint that when we call from the webpage it returns of all images we have uloaded
+app.get('/api/images', (req, res) => {
+  const files = fs.readdirSync(uploadFolder);     // Looks inside the folder imagesUploaded
+
+  const imageUrls = files.map(file => ({
+    name: file,
+    url: `http://localhost:3000/images/${file}`
+  }));
+
+  // res is for the response sent as json back to the webpage
+  res.json(imageUrls);
 });

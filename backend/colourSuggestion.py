@@ -100,12 +100,8 @@ def _get_saturation_mask(pixels_rgb: np.ndarray, threshold: int = 50) -> np.ndar
     hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV).reshape(-1, 3)
     return hsv[:, 1] > threshold
 
-def detect_dominant_colour(
-    img_path: str,
-    patch_size: int = 200,
-    k: int = 4,
-    saturation_threshold: int = 50,
-) -> str:
+
+def detect_dominant_colour(img_path: str, patch_size=200, k=4, saturation_threshold=50) -> str:
     img = cv2.imread(img_path)
     if img is None:
         raise FileNotFoundError(f"Could not open image: {img_path}")
@@ -120,20 +116,16 @@ def detect_dominant_colour(
         return "unknown"
 
     chroma_mask = _get_saturation_mask(pixels, saturation_threshold)
-    chroma_ratio = chroma_mask.sum() / len(pixels)
-    print(f"Chromatic pixel ratio: {chroma_ratio:.2%}")
+    working = pixels[chroma_mask] if (chroma_mask.sum() / len(pixels)) > 0.15 else pixels
 
-    working = pixels[chroma_mask] if chroma_ratio > 0.15 else pixels
-
-    n_clusters = min(k, len(working))
-    kmeans = KMeans(n_clusters=n_clusters, n_init=10, random_state=42)
+    kmeans = KMeans(n_clusters=min(k, len(working)), n_init=10, random_state=42)
     kmeans.fit(working)
 
     counts = np.bincount(kmeans.labels_)
     dominant_rgb = tuple(int(c) for c in kmeans.cluster_centers_[np.argmax(counts)])
 
-    print(f"Dominant RGB: {dominant_rgb}  HSV: {_rgb_to_hsv_pixel(dominant_rgb)}")
     return classify_by_hue(dominant_rgb)
+
 
 def isValidHex(colour):
     try:
@@ -141,45 +133,70 @@ def isValidHex(colour):
     except ValueError:
         return False
 
+
 def hexToRgb(h):
     h = h.lstrip('#')
     return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
 
+
 def rgbDistance(c1, c2):
     return sum((a - b) ** 2 for a, b in zip(hexToRgb(c1), hexToRgb(c2)))
 
-def closestColourName(hex):
-    return min(colourNames, key=lambda ref: rgbDistance(hex, ref))
 
 def loadDataset(csvFile):
     with open(csvFile, newline='', encoding='utf-8') as f:
         return [{
-            "colour1Hex":   r["Color_1_Hex"].strip().lower(),
-            "colour1Name":  r["Color_1_Name"].strip(),
-            "colour2Hex":   r["Color_2_Hex"].strip().lower(),
-            "colour2Name":  r["Color_2_Name"].strip(),
-            "style":       r["Style_Category"].strip(),
+            "colour1Hex": r["Colour_1_Hex"].strip().lower(),
+            "colour1Name": r["Colour_1_Name"].strip(),
+            "colour2Hex": r["Colour_2_Hex"].strip().lower(),
+            "colour2Name": r["Colour_2_Name"].strip(),
+            "style": r["Style_Category"].strip(),
             "description": r["Description"].strip(),
         } for r in csv.DictReader(f)]
 
+
 def pairScore(inputColour, pair):
-    d1, d2 = rgbDistance(inputColour, pair["colour1Hex"]), rgbDistance(inputColour, pair["colour2Hex"])
+    d1 = rgbDistance(inputColour, pair["colour1Hex"])
+    d2 = rgbDistance(inputColour, pair["colour2Hex"])
     return (min(d1, d2), max(d1, d2))
 
-def suggestOutfits(inputColour, csvFile, topN=3):
-    return sorted(loadDataset(csvFile), key=lambda p: pairScore(inputColour, p))[:topN]
+
+
+def detectColour(img_path):  
+    detected_name = detect_dominant_colour(img_path)
+    detected_hex = COLOUR_NAME_TO_HEX.get(detected_name, "#808080")
+    return detected_name, detected_hex
+
+
+def getValidColours(inputColour):
+    topColourCount = 3
+    csvFile = "backend\\clothing_colour_combinations.csv"
+    if not isValidHex(inputColour):
+        return []
+
+    pairs = sorted(
+        loadDataset(csvFile),
+        key=lambda p: pairScore(inputColour, p)
+    )[:topColourCount]
+
+    result = []
+    for pair in pairs:
+        d1 = rgbDistance(inputColour, pair["colour1Hex"])
+        d2 = rgbDistance(inputColour, pair["colour2Hex"])
+        other = pair["colour2Name"] if d1 <= d2 else pair["colour1Name"]
+        result.append(other)
+
+    return result
+
 
 
 if __name__ == "__main__":
     img_path = input("Enter image path: ").strip()
 
-    detected_name = detect_dominant_colour(img_path)
+    name, hex_val = detectColour(img_path)
 
-    detected_hex = COLOUR_NAME_TO_HEX.get(detected_name, "#808080")
+    print(f"\nDetected clothing colour: {name.capitalize()} ({hex_val})")
+    print("\nTop 3 suggested colours to pair with:\n")
 
-    print(f"\nDetected clothing colour: {detected_name.capitalize()} ({detected_hex})")
-    print("\nTop 3 suggested colour pairings:\n")
-
-    for i, pair in enumerate(suggestOutfits(detected_hex, "backend\clothing_colour_combinations.csv"), start=1):
-        print(f"  Outfit {i}: {pair['colour1Name']} ({pair['colour1Hex']}) + {pair['colour2Name']} ({pair['colour2Hex']})")
-        print(f"  Style: {pair['style']} — {pair['description']}\n")
+    for i, colour in enumerate(getValidColours(hex_val)):
+        print(f"Outfit {i}: {colour}")
