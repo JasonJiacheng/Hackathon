@@ -108,7 +108,7 @@ def getWeather(city):
     desc = data["weather"][0]["main"].lower()
     return "temperature: "+ str(temp) + " degrees, " + " description: " + desc
 
-
+main()
 
 
 
