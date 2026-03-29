@@ -116,7 +116,7 @@ const Upload = () => {
                 </button>
                 {detectedType && detectedColour && (
                   <p className="text-white text-3xl font-bold mt-4">
-                    {detectedColour} {detectedType}
+                    {detectedColour.charAt(0).toUpperCase() + detectedColour.slice(1)} {detectedType}
                   </p>
 )}
             
