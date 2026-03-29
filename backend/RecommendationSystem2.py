@@ -143,7 +143,6 @@ def draw_model(descriptions, recommended_outfit, output_file):
             number_of_images=1,
             output_mime_type="image/png",
             aspect_ratio="3:4",           # portrait — good for full-body shots
-            person_generation="ALLOW_ALL",
         ),
     )
 
