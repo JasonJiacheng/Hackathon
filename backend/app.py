@@ -2,13 +2,17 @@ import os
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from clothing_detector import predict
+from RecommendationSystem2 import generate_outfit
 from colourDetector import detect_dominant_colour
 
 app = Flask(__name__)
 CORS(app)
 
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'imagesUploaded')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# UPLOAD_FOLDER = 'imagesUploaded'
+# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 @app.route('/api/upload', methods=['POST', 'GET'])
@@ -30,7 +34,7 @@ def upload():
         "name": name,
         "category": detected_type,
         "detected_colour": detected_colour,
-        "url": f"http://localhost:5000/uploads/{image.filename}"
+        "url": f"/imagesUploaded/{img_path}"
     })
 
 
@@ -83,6 +87,32 @@ def serve_image(filename):
 @app.route('/api/', methods=['GET'])
 def home():
     return jsonify({"message": "ok"})
+
+@app.route('/api/generate', methods=['POST'])
+def generate():
+    """
+    Collect all images in imagesUploaded, call AI prediction logic, and return result
+    """
+    # Step 1: Get all images
+    uploads = [
+        os.path.join(UPLOAD_FOLDER, f)
+        for f in os.listdir(UPLOAD_FOLDER)
+        if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))
+    ]
+
+    if not uploads:
+        return jsonify({"error": "No uploaded images found"}), 400
+
+    # Step 2: Call your backend AI script
+    # This should return the path or data of the generated mannequin image
+    output_file = generate_outfit(uploads)  # returns something like 'modelClothes.png'
+
+    # Step 3: Return the result URL or path
+    return jsonify({
+        "message": "Outfit generated successfully",
+        "output_image": f"/uploads/{os.path.basename(output_file)}"
+    })
+
 
 
 if __name__ == '__main__':

@@ -34,7 +34,7 @@ const Upload = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-  if (!file) {                          // ← add this check
+  if (!file) {                          
     alert('Please choose a file first');
     return;
   }

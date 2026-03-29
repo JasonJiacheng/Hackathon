@@ -20,14 +20,10 @@ def get_openrouter_client():
  
 # ── main ─────────────────────────────────────────────────────────────────────
  
-def main():
-    uploads = []
-    descriptions = [("Trousers", "Blue"), ("T-shirt", "Red")]
- 
-    output = recommend(uploads, descriptions, is_smart=True)
-    print("Recommended outfit:", output)
- 
-    draw_model(descriptions, output, "test.png")
+def generate_outfit(uploads):
+    descriptions = []
+    output = recommend(uploads, descriptions, True)
+    return draw_model(descriptions, output, "modelClothes.png")
  
  
 # ── outfit recommendation ────────────────────────────────────────────────────
@@ -144,7 +140,7 @@ def draw_model(descriptions, recommended_outfit, output_file):
     with open(output_file, "wb") as f:
         f.write(base64.b64decode(base64_data))
  
-    print(f"Image saved to: {output_file}")
+    return output_file
  
  
 # ── location & weather helpers ────────────────────────────────────────────────

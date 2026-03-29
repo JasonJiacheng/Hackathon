@@ -100,40 +100,37 @@ const Library = () => {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {images.length > 0 ?   // Ensure we have at least one image
-            images.filter(item => {
-              const matchesCategory =
-                category === 'All' || item.category.toLowerCase() === category.toLowerCase();
-
-              const matchesColour =
-                color === 'All' || item.detected_colour.toLowerCase() === color.toLowerCase();
-
-              const matchesSearch =
-                item.name.toLowerCase().includes(search.toLowerCase());
-
-              return matchesCategory && matchesColour && matchesSearch;
-            })
-            .map(item => (
-              <div
-                key={item.name}
-                className="bg-gray-800 hover:bg-gray-700 rounded-2xl p-4 hover:scale-105 transition-transform"
-              >
-                <div
-                  className="w-full h-32 rounded-lg mb-3"
-                >
-                  <img
-                    src={item.url}
-                    className="w-full object-contain rounded-md"
-                  />
-                </div>
-                <h3 className="font-semibold text-lg">{item.name.split('-')[0]}</h3>
-              </div>
-            )) : (
-            <p className="text-gray-400">No items found.</p>
-          )}
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+  {images.length > 0 ? 
+    images.filter(item => {
+      const matchesCategory =
+        category === 'All' || item.category.toLowerCase() === category.toLowerCase();
+      const matchesColour =
+        color === 'All' || item.detected_colour.toLowerCase() === color.toLowerCase();
+      const matchesSearch =
+        item.name.toLowerCase().includes(search.toLowerCase());
+      return matchesCategory && matchesColour && matchesSearch;
+    })
+    .map(item => (
+      <div
+        key={item.name}
+        className="flex flex-col bg-gray-800 hover:bg-gray-700 rounded-2xl p-3 transition-transform hover:scale-105"
+      >
+        <div className="w-full h-64 flex items-center justify-center overflow-hidden rounded-lg mb-3">
+          <img
+            src={item.url}
+            alt={item.name}
+            className="object-contain w-full h-full"
+          />
         </div>
+        <h3 className="font-semibold text-lg truncate">{item.name.split('-')[0]}</h3>
       </div>
+    ))
+  : (
+    <p className="text-gray-400 col-span-full text-center">No items found.</p>
+  )}
+</div>
+</div>
 
       {/* Menu */}
       <ul
@@ -154,7 +151,7 @@ const Library = () => {
         </li>
 
         <li className="p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
-          <Link to="/Library">Library</Link>
+          <Link to="/Generate">Generate</Link>
         </li>
 
         <li className="p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
