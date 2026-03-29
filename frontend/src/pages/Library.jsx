@@ -2,19 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
-// Temporary test data
-const Clothes = [
-  { id: 1, name: 'Red Boots', type: 'boots', colour: '#ff0000' },
-  { id: 2, name: 'Blue Jacket', type: 'jackets', colour: '#0000ff' },
-  { id: 3, name: 'Green Hat', type: 'hats', colour: '#00ff00' },
-  { id: 4, name: 'Black Trainers', type: 'trainers', colour: '#000000' },
-  { id: 5, name: 'White T-Shirt', type: 'tops', colour: '#ffffff' },
-  { id: 6, name: 'Grey Trousers', type: 'trousers', colour: '#808080' },
-  { id: 7, name: 'Pink Jacket', type: 'jackets', colour: '#ffc0cb' },
-  { id: 8, name: 'Brown Boots', type: 'boots', colour: '#a52a2a' },
-];
-
-const Categories = ['All', 'Shoes', 'Shirts', 'Outwear', 'T-shirts', 'Shorts', 'Trousers', "Dresses", "Skirt"];
+const Categories = ['All', 'Shoes', 'Shirt', 'Outwear', 'T-shirt', 'Shorts', 'Trousers', "Dress", "Skirt"];
 
 const Colours = {
     all : "All",
@@ -132,7 +120,7 @@ const Library = () => {
                 className="bg-gray-800 hover:bg-gray-700 rounded-2xl p-4 hover:scale-105 transition-transform"
               >
                 <div
-                  className="w-full h-32rounded-lg mb-3"
+                  className="w-full h-32 rounded-lg mb-3"
                 >
                   <img
                     src={item.url}
