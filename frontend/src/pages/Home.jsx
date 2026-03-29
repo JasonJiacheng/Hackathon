@@ -1,8 +1,7 @@
 import {useState} from 'react';
 import {AiOutlineMenu, AiOutlineClose} from 'react-icons/ai';
-import {Link} from 'react-router'
-import image from '../assets/closet.png'
-import {ReactTyped} from 'react-typed'
+import {Link} from 'react-router-dom'
+
 
 const Home = () => {
     // for the menu

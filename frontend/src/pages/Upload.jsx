@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import DefaultImage from "../assets/closet.png";
+import { apiPost } from '../api.js';
 
 const Upload = () => {
   const [nav, setNav] = useState(false);
@@ -9,6 +10,8 @@ const Upload = () => {
   const fileUploadRef = useRef();
   const [name, setName] = useState('no-name');
   const [category, setCategory] = useState('no-category');
+  const [detectedType, setDetectedType] = useState(null);
+  const [detectedColour, setDetectedColour] = useState(null);
 
   // Default image
   const [avatar, setAvatar] = useState(DefaultImage);
@@ -40,12 +43,15 @@ const Upload = () => {
   data.append('name', name);
   data.append('image', file);
 
-  fetch('/api/upload', {
+  fetch('http://localhost:5000/api/upload', {
     method: 'POST',
     body: data
   })
   .then(res => res.json())
-  .then(data => console.log('Upload successful', data))
+  .then(data => {
+    setDetectedType(data.category);
+    setDetectedColour(data.detected_colour);
+  })
   .catch(err => console.error('Upload failed', err));
      
   }
@@ -73,31 +79,38 @@ const Upload = () => {
         </div>
 
         {/* Right panel */}
-        <div className="bg-black pr-4 py-8 grid grid-rows-2 gap-4">2
+        <div className="bg-black pr-4 py-8 grid grid-rows-2 gap-4">
 
           {/* Form grid of 2 columns */}
           <div className="bg-black grid grid-cols-2 gap-4 pr-16 text-white">
             <p className="font-bold text-3xl">Name</p>
             <input type="text" onChange={handleName} className="bg-white text-black text-2xl rounded w-full h-20 px-2 py-1" />
           </div>
+          
 
           {/* Upload button */}
-          <div className="flex justify-center items-center  bg-black ">
+          <div className="flex flex-col justify-center items-center  bg-black ">
             <form id = "form" onSubmit = {handleSubmit} encType="multipart/form-data" className = "flex flex-row justify-center items-center gap-4">
            
                 {/* to show */}
-                <label htmlFor="inputButton" className="bg-green-300 w-50 text-center h-20 rounded-md hover:scale-105 hover:bg-green-500 transition-transform duration-300 flex items-center justify-center cursor-pointer text-black font-bold text-2xl">
+                <label htmlFor="inputButton" className="text-bold text-2xl font-bold rounded-md bg-white w-50 h-15 flex items-center justify-center hover:bg-gray-200 hover:scale-105 transition-transform duration-300">
                     Choose File
                 </label>
                 <input id="inputButton" type="file" className="hidden" ref={fileUploadRef} accept="image/*" onChange={uploadImageDisplay} />
 
                 {/* to store */}
-                <button type="submit" className="bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 hover:bg-green-500 transition-transform duration-300 flex items-center justify-center text-black font-bold text-2xl">
+                <button type="submit" className="text-bold text-2xl font-bold rounded-md bg-white w-50 h-15 flex items-center justify-center hover:bg-gray-200 hover:scale-105 transition-transform duration-300">
                     Submit
                 </button>
-
-            
             </form>
+            {detectedType && detectedColour && (
+              <div className="flex flex-col items-center gap-2 mt-6">
+                <p className="text-white text-3xl font-bold tracking-wide">
+                  Detected: {detectedColour.charAt(0).toUpperCase() + detectedColour.slice(1)}{' '}
+                  {detectedType.charAt(0).toUpperCase() + detectedType.slice(1)}
+                </p>
+              </div>
+            )}
           </div>
 
         </div>

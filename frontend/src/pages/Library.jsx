@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import { Link } from 'react-router-dom'; // fixed import
+import { Link } from 'react-router-dom';
 
 // Temporary test data
 const Clothes = [
