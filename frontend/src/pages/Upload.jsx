@@ -8,12 +8,16 @@ const Upload = () => {
   const [nav, setNav] = useState(false);
   const [file, setFile] = useState(null);
   const fileUploadRef = useRef();
+  const [name, setName] = useState('no-name');
+  const [category, setCategory] = useState('no-category');
 
   // Default image
   const [avatar, setAvatar] = useState(DefaultImage);
 
   // Event handlers
   const handleNav = () => setNav(!nav);
+  const handleCategory = (e) => setCategory(e.target.value);
+  const handleName = (e) => setName(e.target.value);
 
   const uploadImageDisplay = () => {
     const uplaodedFile = fileUploadRef.current.files[0];
@@ -22,20 +26,30 @@ const Upload = () => {
     setFile(uplaodedFile);
   }
 
+
+
   // Take image to the backend
   const handleSubmit = (event) => {
-     event.preventDefault();
+    event.preventDefault();
+
+  if (!file) {                          // ← add this check
+    alert('Please choose a file first');
+    return;
+  }
+
+  const data = new FormData();
+  data.append('image', file);
+  data.append('name', name);
+  data.append('category', category);
+
+  fetch('/api/upload', {
+    method: 'POST',
+    body: data
+  })
+  .then(res => res.json())
+  .then(data => console.log('Upload successful', data))
+  .catch(err => console.error('Upload failed', err));
      
-     // Initialize form data object
-     const data = new FormData();
-
-     // Append data ie image stored in avatar
-     data.append('image', file);
-
-     // Send POST request to backend
-     apiPost('/api/upload', data)
-    .then(data => console.log('Upload successful', data))
-    .catch(err => console.error('Upload failed', err));
   }
 
   return (
@@ -47,7 +61,7 @@ const Upload = () => {
         <button
           className="rounded w-16 h-16 m-5 text-white hover:scale-110 duration-200 flex items-center justify-center"
           onClick={handleNav}>
-          {!nav ? <AiOutlineMenu size={40} /> : <AiOutlineClose size={40} />}
+          <AiOutlineMenu size={40} /> 
         </button>
       </div>
 
@@ -64,24 +78,34 @@ const Upload = () => {
         <div className="bg-black pr-4 py-8 grid grid-rows-2 gap-4">
 
           {/* Form grid of 2 columns */}
-          <div className="bg-black grid grid-cols-2 gap-4 text-white">
-            <p className="font-bold text-xl">Name</p>
-            <input type="text" className="bg-white rounded w-full px-2 py-1" />
-            <p className="font-bold text-xl">Category</p>
-            <input type="text" className="bg-white rounded w-full px-2 py-1" />
+          <div className="bg-black grid grid-cols-2 gap-4 pr-16 text-white">
+            <p className="font-bold text-3xl">Name</p>
+            <input type="text" onChange={handleName} className="bg-white text-black text-2xl rounded w-full px-2 py-1" />
+            <p className="font-bold text-3xl">Category</p>
+            <select className="bg-white rounded w-full px-2 py-1 text-black text-2xl" onChange={handleCategory}>
+                <option value="">Select category</option>
+                <option value="shirt"> Shirt</option>
+                <option value="shoes"> Shoes</option>
+                <option value="shorts"> Shorts</option>
+                <option value="skirt"> Skirt</option>
+                <option value="t-shirt"> Vegetable</option>
+                <option value="trousers"> Dairy</option>
+                <option value="outerwear"> Outerwear</option>
+            </select>
           </div>
 
           {/* Upload button */}
-          <div className="flex flex-row justify-center items-center bg-black ">
-            <form id = "form" onSubmit = {handleSubmit} encType="multipart/form-data" className = "bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 transition-transform duration-300">
+          <div className="flex justify-center items-center  bg-black ">
+            <form id = "form" onSubmit = {handleSubmit} encType="multipart/form-data" className = "flex flex-row justify-center items-center gap-4">
+           
                 {/* to show */}
-                <label htmlFor="inputButton" className="bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 transition-transform duration-300 flex items-center justify-center cursor-pointer text-black font-bold text-2xl">
+                <label htmlFor="inputButton" className="bg-green-300 w-50 text-center h-20 rounded-md hover:scale-105 hover:bg-green-500 transition-transform duration-300 flex items-center justify-center cursor-pointer text-black font-bold text-2xl">
                     Choose File
                 </label>
                 <input id="inputButton" type="file" className="hidden" ref={fileUploadRef} accept="image/*" onChange={uploadImageDisplay} />
 
                 {/* to store */}
-                <button type="submit" className="bg-blue-400 w-30 text-center h-20 rounded-md hover:scale-105 transition-transform duration-300 flex items-center justify-center text-black font-bold text-2xl">
+                <button type="submit" className="bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 hover:bg-green-500 transition-transform duration-300 flex items-center justify-center text-black font-bold text-2xl">
                     Submit
                 </button>
 
@@ -93,22 +117,32 @@ const Upload = () => {
       </div>
 
         {/* Menu */}
-        <ul className={`fixed top-0 h-full w-[60%] bg-black transition-all duration-300 ease-in-out ${nav ? "left-0" : "-left-full"}`}>
+        <ul className={`fixed top-0 h-full w-full bg-black transition-all duration-300 ease-in-out ${nav ? "left-0" : "-left-full"}`}>
+            {/* Close button */}
+                <div className="flex justify-end p-5">
+                    <button
+                        onClick={handleNav}
+                        className="text-white hover:scale-110 duration-200"
+                    >       
+                    <AiOutlineClose size={40} />
+                    </button>
+                </div>
+        
             <li className = "p-4 uppercase text-white text-4xl font-bold"> Menu: </li>
                                     
-            <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
-                <Link to = "/Upload" > Upload </Link> 
+            <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
+                <Link to = "/" > Home </Link> 
             </li>
 
-            <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+            <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
                 <Link to = "/Library" > Library </Link> 
             </li>
 
-            <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+            <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
                 <Link to = "/Outfits" > Outfits </Link> 
             </li>
 
-            <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600">
+            <li className = "p-4 uppercase text-white text-2xl border-b border-gray-600 hover:scale-105 hover:text-gray-600 duration-200">
                 <Link to = "/Generate" > Generate </Link> 
             </li>
         </ul>

@@ -109,6 +109,7 @@ def _get_saturation_mask(pixels_rgb: np.ndarray, threshold: int = 50) -> np.ndar
 # Main detection
 # ---------------------------------------------------------------------------
 
+# returns the main color found in an image (possibly return the images that are closest to it)
 def detect_dominant_colour(
     img_path: str,
     patch_size: int = 200,

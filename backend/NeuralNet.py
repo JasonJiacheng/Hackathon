@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader, random_split
 import torch.optim as optim
 from PIL import Image
 
+# CNN model that classifies clothing types
 class ClothingCNN(nn.Module):
     #224x224 pixels with 3 color channels (RGB) expected
     def __init__(self, num_classes):

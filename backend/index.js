@@ -20,7 +20,14 @@ const storage = multer.diskStorage({
     cb(null, uploadFolder);        // every uploaded file goes to imagesUploaded given no errors
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+    const name = req.body.name || 'no-name';
+    const type = req.body.category || 'no-category';
+
+    const originalName = path.extname(file.originalname);
+
+    const newName = `${name}-${type}-${originalName}`;
+
+    cb(null, newName);
   }
 });
 
