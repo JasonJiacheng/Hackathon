@@ -4,6 +4,7 @@ from flask_cors import CORS
 from clothing_detector import predict
 from RecommendationSystem2 import generate_outfit
 from colourDetector import detect_dominant_colour
+from RecommendationSystem2 import main
 
 app = Flask(__name__)
 CORS(app)
@@ -105,15 +106,13 @@ def generate():
 
     # Step 2: Call your backend AI script
     # This should return the path or data of the generated mannequin image
-    output_file = generate_outfit(uploads)  # returns something like 'modelClothes.png'
+    output_file = main(uploads)  # returns something like 'modelClothes.png'
 
     # Step 3: Return the result URL or path
     return jsonify({
         "message": "Outfit generated successfully",
         "output_image": f"/uploads/{os.path.basename(output_file)}"
     })
-
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
