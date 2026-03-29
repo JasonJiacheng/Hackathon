@@ -8,14 +8,9 @@ import io
 import base64
 from PIL import Image
 import genai  
-<<<<<<< HEAD
-
-def recommend(uploads, descriptions, valid_colours):
-=======
 import requests
 
 def recommend(uploads, descriptions, valid_colours, is_smart): #where is_smart is a boolean variable toggled by the on/off switch in generating page 
->>>>>>> da1b7fc9bd5aff32c05034950ee9c397494a5658
     client = OpenAI(
         api_key=os.environ.get("OPENROUTER_API_KEY"),
         base_url="https://openrouter.ai/api/v1"
@@ -91,6 +86,5 @@ def getWeather(city):
     temp = round(data["main"]["temp"])
     desc = data["weather"][0]["main"].lower()
     return "temperature: "+ str(temp) + " degrees, " + " description: " + desc
-
 
 
