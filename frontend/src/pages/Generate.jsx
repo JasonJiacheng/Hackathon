@@ -15,7 +15,7 @@ const Generate = () => {
     };
 
     // Categories
-    const Categories = ['boots', 'hats', 'jackets', 'tops', 'trainers', 'trousers'];
+    const Categories = ['shoes', 'shirts', 'outerwear', 't-shirts', 'shorts', 'trousers', "dresses"];
 
 
     return (

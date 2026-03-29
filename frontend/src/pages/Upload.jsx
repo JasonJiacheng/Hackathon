@@ -37,9 +37,8 @@ const Upload = () => {
   }
 
   const data = new FormData();
-  data.append('image', file);
   data.append('name', name);
-  data.append('category', category);
+  data.append('image', file);
 
   fetch('/api/upload', {
     method: 'POST',
@@ -79,18 +78,7 @@ const Upload = () => {
           {/* Form grid of 2 columns */}
           <div className="bg-black grid grid-cols-2 gap-4 pr-16 text-white">
             <p className="font-bold text-3xl">Name</p>
-            <input type="text" onChange={handleName} className="bg-white text-black text-2xl rounded w-full px-2 py-1" />
-            <p className="font-bold text-3xl">Category</p>
-            <select className="bg-white rounded w-full px-2 py-1 text-black text-2xl" onChange={handleCategory}>
-                <option value="">Select category</option>
-                <option value="shirt"> Shirt</option>
-                <option value="shoes"> Shoes</option>
-                <option value="shorts"> Shorts</option>
-                <option value="skirt"> Skirt</option>
-                <option value="t-shirt"> Vegetable</option>
-                <option value="trousers"> Dairy</option>
-                <option value="outerwear"> Outerwear</option>
-            </select>
+            <input type="text" onChange={handleName} className="bg-white text-black text-2xl rounded w-full h-20 px-2 py-1" />
           </div>
 
           {/* Upload button */}
