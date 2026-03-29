@@ -98,19 +98,20 @@ const Upload = () => {
                 <option value="outerwear"> Outerwear</option>
             </select>
           </div>
+          
 
           {/* Upload button */}
           <div className="flex justify-center items-center  bg-black ">
             <form id = "form" onSubmit = {handleSubmit} encType="multipart/form-data" className = "flex flex-row justify-center items-center gap-4">
            
                 {/* to show */}
-                <label htmlFor="inputButton" className="bg-green-300 w-50 text-center h-20 rounded-md hover:scale-105 hover:bg-green-500 transition-transform duration-300 flex items-center justify-center cursor-pointer text-black font-bold text-2xl">
+                <label htmlFor="inputButton" className="text-bold text-2xl font-bold rounded-md bg-white w-50 h-15 flex items-center justify-center hover:bg-gray-200 hover:scale-105 transition-transform duration-300">
                     Choose File
                 </label>
                 <input id="inputButton" type="file" className="hidden" ref={fileUploadRef} accept="image/*" onChange={uploadImageDisplay} />
 
                 {/* to store */}
-                <button type="submit" className="bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 hover:bg-green-500 transition-transform duration-300 flex items-center justify-center text-black font-bold text-2xl">
+                <button type="submit" className="text-bold text-2xl font-bold rounded-md bg-white w-50 h-15 flex items-center justify-center hover:bg-gray-200 hover:scale-105 transition-transform duration-300">
                     Submit
                 </button>
                 {detectedType && detectedColour && (
