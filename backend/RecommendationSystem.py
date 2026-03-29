@@ -1,21 +1,68 @@
-import sys
-sys.path.insert(0, r"C:\Users\sm4134\AppData\Roaming\Python\Python313\site-packages")
 from openai import OpenAI
 from clothing_detector import predict
 from colourDetector import detect_dominant_colour
-#Get the uploads from ifi's folder
-#Put them in the uploads list
-uploads = []
-descriptions = [("Shorts", "Red"), ("Top", "Blue")]
-for upload in uploads:
-    type_of_clothes = predict(upload)
-    colour_of_clothes = detect_dominant_colour(upload)
-    descriptions.append(type_of_clothes, colour_of_clothes)
-client = OpenAI()
-response = client.responses.create(
-    model = "gpt-5.4",
-    input = "The user has got the following clothes: " + descriptions + ", I want you to create a list of type of clothes along with their colours that would go well with the clothes the user has already got."
-    + " Utilise strong colour theory and have good sense of fashion, they must look good with your recommendations. Your reccomendations must be of the form <type of clothe>, <colour> where"
-    + " the type of clothe is one of: dress, shirt, shoes, shorts, skirt, t-shirt, trousers, outwear and the colour is one of: red, yellow, blue, green, orange, purple, pink, black, white, grey."
+import os
+import ast
+import re
+import io
+import base64
+from PIL import Image
+import genai  # make sure you have the Gemini SDK installed
+
+def recommend(uploads, descriptions, valid_colours):
+    client = OpenAI(
+        api_key=os.environ.get("OPENROUTER_API_KEY"),
+        base_url="https://openrouter.ai/api/v1"
     )
-print(response.output[0].content[0].text)
+
+    for upload in uploads:
+        type_of_clothes = predict(upload)
+        colour_of_clothes = detect_dominant_colour(upload)
+        descriptions.append((type_of_clothes, colour_of_clothes))
+
+    formatted_descriptions = ", ".join([f"{t} ({c})" for t, c in descriptions])
+
+    prompt = (
+        f"The user has the following clothes: {formatted_descriptions}. "
+        "Suggest one full outfit that complements the user's clothes. "
+        "Return only a Python list of tuples in the form (type of clothing, colour). "
+        "Use only these types: dress, shirt, shoes, shorts, skirt, t-shirt, trousers, outerwear "
+        f"and only these colours: {', '.join(valid_colours)}. "
+        "Do not include any text outside the list, no explanations, no quotes, nothing else."
+    )
+
+    response = client.responses.create(
+        model="gpt-5",
+        input=prompt
+    )
+
+    raw_text = response.output_text.strip()
+    match = re.search(r"\[.*\]", raw_text, re.DOTALL)
+    if match:
+        try:
+            outfit_list = ast.literal_eval(match.group())
+        except Exception:
+            outfit_list = []
+    else:
+        outfit_list = []
+
+    return outfit_list
+
+def draw_model(descriptions, outputFromOpenAI, output_file):
+    client = genai.Client()  # Gemini client
+    prompt_text = (
+        f"I have this description of an outfit: {descriptions} {outputFromOpenAI}. "
+        "Draw a 3D model of this outfit on a mannequin/doll. "
+        "Keep it plain and generic, strictly following the colour and type of clothing specified."
+    )
+
+    response = client.models.generate_content(
+        model="gemini-2.0-flash-exp-image-generation",
+        contents=prompt_text
+    )
+
+    for part in response.candidates[0].content.parts:
+        if hasattr(part, "inline_data"):
+            image_data = base64.b64decode(part.inline_data.data)
+            image = Image.open(io.BytesIO(image_data))
+            image.save(output_file)
