@@ -7,17 +7,16 @@ import re
 import io
 import base64
 from PIL import Image
-import genai  
 import requests
 from colourSuggestion import getValidColours
-def main(): #main is just for testing
+def main():
     uploads = []
     descriptions = [("Trousers", "Blue"), ("T-shirt", "Red")]
     output = recommend(uploads, descriptions, True)
     print(output)
     draw_model(descriptions, output, "test.png")
     
-def recommend(uploads, descriptions, is_smart): #is_smart is a toggle on/off switch bool
+def recommend(uploads, descriptions, is_smart):
     client = OpenAI(
         api_key=os.environ.get("OPENROUTER_API_KEY"),
         base_url="https://openrouter.ai/api/v1"
@@ -70,24 +69,27 @@ def recommend(uploads, descriptions, is_smart): #is_smart is a toggle on/off swi
 
     return outfit_list       
 
+
 def draw_model(descriptions, outputFromOpenAI, output_file):
-    client = genai.Client()  # Gemini client
-    prompt_text = (
-        f"I have this description of an outfit: {descriptions} {outputFromOpenAI}. "
-        "Draw a 3D model of this outfit on a mannequin/doll. "
-        "Keep it plain and generic, strictly following the colour and type of clothing specified."
+    client = OpenAI(
+        api_key=os.environ.get("OPENROUTER_API_KEY"),
+        base_url="https://openrouter.ai/api/v1"
     )
 
-    response = client.models.generate_content(
-        model="gemini-2.0-flash-exp-image-generation",
-        contents=prompt_text
+    prompt = (
+        f"3D mannequin wearing outfit: {descriptions} {outputFromOpenAI}, "
+        "clean background, realistic clothing, full body"
     )
 
-    for part in response.candidates[0].content.parts:
-        if hasattr(part, "inline_data"):
-            image_data = base64.b64decode(part.inline_data.data)
-            image = Image.open(io.BytesIO(image_data))
-            image.save(output_file)
+    result = client.images.generate(
+        model="openai/gpt-image-1",  # OpenRouter supports this
+        prompt=prompt
+    )
+
+    image_base64 = result.data[0].b64_json
+
+    with open(output_file, "wb") as f:
+        f.write(base64.b64decode(image_base64))
 
 def getArea():
     response = requests.get("https://ipinfo.io/json")
@@ -107,4 +109,8 @@ def getWeather(city):
     return "temperature: "+ str(temp) + " degrees, " + " description: " + desc
 
 main()
+
+
+
+
 
