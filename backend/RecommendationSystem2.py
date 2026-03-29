@@ -20,15 +20,16 @@ def get_openrouter_client():
  
 # ── main ─────────────────────────────────────────────────────────────────────
  
-def generate_outfit(uploads):
+def main(uploads):
     descriptions = []
-    output = recommend(uploads, descriptions, True)
-    return draw_model(descriptions, output, "modelClothes.png")
+    output, descriptions = recommend(uploads, descriptions, True)
+    fileAddress = draw_model(descriptions, output, "modelClothes.png")
+    return fileAddress
  
  
 # ── outfit recommendation ────────────────────────────────────────────────────
  
-def recommend(uploads, descriptions, is_smart=False):
+def recommend(uploads, descriptions = [], is_smart= True):
     client = get_openrouter_client()
  
     detected_colours = []
@@ -50,7 +51,7 @@ def recommend(uploads, descriptions, is_smart=False):
  
     prompt = (
         f"The user already owns: {formatted}. "
-        "Suggest one complete complementary outfit. "
+        "Suggest one complete complementary outfit that makes sense in real life. "
         "Return ONLY a Python list of tuples: [(clothing_type, colour), ...]. "
         "Allowed types: dress, shirt, shoes, shorts, skirt, t-shirt, trousers, outerwear. "
         f"{colour_constraint}"
@@ -70,23 +71,22 @@ def recommend(uploads, descriptions, is_smart=False):
         messages=[{"role": "user", "content": prompt}],
         temperature=0.7,
     )
- 
     raw = response.choices[0].message.content.strip()
     match = re.search(r"\[.*?\]", raw, re.DOTALL)
     if match:
         try:
-            return ast.literal_eval(match.group())
+            return (ast.literal_eval(match.group()), descriptions)
         except Exception as e:
             print(f"Warning: could not parse outfit list: {e}")
     else:
         print("Warning: no list found in model response.")
  
-    return []
+    return ([], descriptions)
  
  
 # ── image generation ─────────────────────────────────────────────────────────
  
-def draw_model(descriptions, recommended_outfit, output_file):
+def draw_model(descriptions, recommended_outfit, output_file = "ModelClothes.png"):
     """
     Generate a mannequin image via OpenRouter and save it as a PNG.
  
@@ -140,6 +140,7 @@ def draw_model(descriptions, recommended_outfit, output_file):
     with open(output_file, "wb") as f:
         f.write(base64.b64decode(base64_data))
  
+    print(f"Image saved to: {output_file}")
     return output_file
  
  
@@ -169,4 +170,5 @@ def get_weather(city):
  
  
 if __name__ == "__main__":
-    main()
+    uploads = [r"C:\Documents\Hackathon\imagesUploaded\blue_jumper.jpeg", r"C:\Documents\Hackathon\imagesUploaded\orange_shirt.jpg"]
+    main(uploads)
