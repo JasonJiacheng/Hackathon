@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useRef } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import {Link} from 'react-router-dom';
+import image from '../assets/closet.png'
 
 const Generate = () => {
     const [nav, setNav] = useState(false);
@@ -14,7 +15,7 @@ const Generate = () => {
     };
 
     // Categories
-    const Categories = ['boots', 'hats', 'jackets', 'tops', 'trainers', 'trousers'];
+    const Categories = ['shoes', 'shirts', 'outerwear', 't-shirts', 'shorts', 'trousers', "dresses"];
 
 
     return (
