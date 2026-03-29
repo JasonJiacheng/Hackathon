@@ -101,7 +101,7 @@ const Upload = () => {
           
 
           {/* Upload button */}
-          <div className="flex justify-center items-center  bg-black ">
+          <div className="flex flex-col justify-center items-center  bg-black ">
             <form id = "form" onSubmit = {handleSubmit} encType="multipart/form-data" className = "flex flex-row justify-center items-center gap-4">
            
                 {/* to show */}
@@ -114,13 +114,15 @@ const Upload = () => {
                 <button type="submit" className="text-bold text-2xl font-bold rounded-md bg-white w-50 h-15 flex items-center justify-center hover:bg-gray-200 hover:scale-105 transition-transform duration-300">
                     Submit
                 </button>
-                {detectedType && detectedColour && (
-                  <p className="text-white text-3xl font-bold mt-4">
-                    {detectedColour.charAt(0).toUpperCase() + detectedColour.slice(1)} {detectedType}
-                  </p>
-)}
-            
             </form>
+            {detectedType && detectedColour && (
+              <div className="flex flex-col items-center gap-2 mt-6">
+                <p className="text-white text-3xl font-bold tracking-wide">
+                  Detected: {detectedColour.charAt(0).toUpperCase() + detectedColour.slice(1)}{' '}
+                  {detectedType.charAt(0).toUpperCase() + detectedType.slice(1)}
+                </p>
+              </div>
+            )}
           </div>
 
         </div>
