@@ -43,7 +43,7 @@ const Upload = () => {
   data.append('name', name);
   data.append('image', file);
 
-  fetch('http://localhost:5000/api/upload', {
+  fetch('http://localhost:3000/api/upload', {
     method: 'POST',
     body: data
   })
