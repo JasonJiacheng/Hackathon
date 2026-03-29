@@ -32,5 +32,9 @@ def upload():
         "path":            img_path
     })
 
+@app.route('/api/', methods=['GET'])
+def home():
+    return jsonify({"message": "ok"})
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
