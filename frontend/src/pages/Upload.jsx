@@ -18,6 +18,29 @@ const Upload = () => {
     const uplaodedFile = fileUploadRef.current.files[0];
     const cachedURL = URL.createObjectURL(uplaodedFile);
     setAvatar(cachedURL);
+    setFile(uplaodedFile);
+  }
+
+  // Take image to the backend
+  const handleSubmit = (event) => {
+     event.preventDefault();
+     
+     // Initialize form data object
+     const data = new FormData();
+
+     // Append data ie image stored in avatar
+     data.append('image', file);
+
+     // Send POST request to backend
+     fetch('http://localhost:3000/api/upload', {  // send post request to /api/upload
+        method: 'POST',
+        body: data
+    }).then(res => {
+        console.log("Raw response:", res);
+        return res.json(); // convert to JSON
+    })
+    .then(data => console.log('Upload successful', data))
+    .catch(err => console.error('Upload failed', err));
   }
 
   return (
@@ -39,11 +62,11 @@ const Upload = () => {
         {/* Left panel */}
         <div className="bg-black py-4 px-8">
           {/* <div className="bg-white rounded-md flex-1"></div> */}
-          <img src = {avatar} alt = "avatar" className = "rounded-md w-full flex-auto"></img>
+          <img src = {avatar} alt = "avatar" className = "rounded-md h-full flex-auto"></img>
         </div>
 
         {/* Right panel */}
-        <div className="bg-black pr-4 py-8 grid grid-rows-2 gap-4">
+        <div className="bg-black pr-4 py-8 grid grid-rows-2 gap-4">2
 
           {/* Form grid of 2 columns */}
           <div className="bg-black grid grid-cols-2 gap-4 text-white">
@@ -54,13 +77,20 @@ const Upload = () => {
           </div>
 
           {/* Upload button */}
-          <div className="flex flex-col justify-center items-center bg-black ">
-            <form id = "form" encType="multipart/form-data" className = "bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 transition-transform duration-300">
-                <label htmlFor="inputButton" className = "text-black font-bold text-2xl">
-                    Upload
-                </label> 
-                <input id = "inputButton" type = "file" className = "hidden" ref = {fileUploadRef} accept = "image/*" onChange={uploadImageDisplay}>
-                </input>
+          <div className="flex flex-row justify-center items-center bg-black ">
+            <form id = "form" onSubmit = {handleSubmit} encType="multipart/form-data" className = "bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 transition-transform duration-300">
+                {/* to show */}
+                <label htmlFor="inputButton" className="bg-green-300 w-30 text-center h-20 rounded-md hover:scale-105 transition-transform duration-300 flex items-center justify-center cursor-pointer text-black font-bold text-2xl">
+                    Choose File
+                </label>
+                <input id="inputButton" type="file" className="hidden" ref={fileUploadRef} accept="image/*" onChange={uploadImageDisplay} />
+
+                {/* to store */}
+                <button type="submit" className="bg-blue-400 w-30 text-center h-20 rounded-md hover:scale-105 transition-transform duration-300 flex items-center justify-center text-black font-bold text-2xl">
+                    Submit
+                </button>
+
+            
             </form>
           </div>
 
