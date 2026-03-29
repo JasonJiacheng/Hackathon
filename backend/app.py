@@ -1,128 +1,36 @@
 import os
-from flask import Flask, request, jsonify, send_from_directory
-from werkzeug.utils import secure_filename
-from detector import run_detection
-from database import init_db, get_db
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from clothing_detector import predict
+from colourDetector import detect_dominant_colour
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = "static/uploads"
-app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
+CORS(app)
 
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
-init_db()
+UPLOAD_FOLDER = 'uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-# ── HOME ──────────────────────────────────────────────────────────────────────
-@app.route("/api/home", methods=["GET"])
-def home():
-    db = get_db()
-    total_items = db.execute("SELECT COUNT(*) FROM items").fetchone()[0]
-    db.close()
-    return jsonify({"total_items": total_items})
-
-
-# ── UPLOAD ────────────────────────────────────────────────────────────────────
-@app.route("/api/detect", methods=["POST"])
-def detect():
-    file = request.files.get("image")
-
-    if not file or file.filename == "":
+@app.route('/api/upload', methods=['POST'])
+def upload():
+    if 'image' not in request.files:
         return jsonify({"error": "No image provided"}), 400
-    if not allowed_file(file.filename):
-        return jsonify({"error": "Invalid file type. Use JPG, PNG or WEBP"}), 400
 
-    filename    = secure_filename(file.filename)
-    input_path  = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-    output_name = f"detected_{filename}"
-    output_path = os.path.join(app.config["UPLOAD_FOLDER"], output_name)
+    image    = request.files['image']
+    name     = request.form.get('name', '')
 
-    file.save(input_path)
-    findings = run_detection(input_path, output_path)
+    img_path = os.path.join(UPLOAD_FOLDER, image.filename)
+    image.save(img_path)
 
-    ## Save every detected garment as its own row in the DB
-    db = get_db()
-    for item in findings:
-        db.execute("""
-            INSERT INTO items (filename, original, annotated, garment, colour, confidence)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (
-            filename,
-            f"/api/uploads/{filename}",
-            f"/api/uploads/{output_name}",
-            item["garment"],
-            item["colour"],
-            item["confidence"]
-        ))
-    db.commit()
-    db.close()
+    detected_type   = predict(img_path)
+    detected_colour = detect_dominant_colour(img_path)
 
     return jsonify({
-        "findings":     findings,
-        "result_image": f"/api/uploads/{output_name}"
+        "message":         "Upload successful",
+        "name":            name,
+        "category":        detected_type,
+        "detected_colour": detected_colour,
+        "path":            img_path
     })
 
-
-# ── LIBRARY ───────────────────────────────────────────────────────────────────
-@app.route("/api/library", methods=["GET"])
-def get_library():
-    db   = get_db()
-    rows = db.execute(
-        "SELECT * FROM items ORDER BY uploaded_at DESC"
-    ).fetchall()
-    db.close()
-    return jsonify({"items": [dict(row) for row in rows]})
-
-
-@app.route("/api/library/<int:item_id>", methods=["DELETE"])
-def delete_item(item_id):
-    db  = get_db()
-    row = db.execute(
-        "SELECT original, annotated FROM items WHERE id = ?", (item_id,)
-    ).fetchone()
-
-    if not row:
-        db.close()
-        return jsonify({"error": "Item not found"}), 404
-
-    # Delete image files from disk
-    for url in [row["original"], row["annotated"]]:
-        path = url.replace("/api/uploads/", app.config["UPLOAD_FOLDER"] + "/")
-        if os.path.exists(path):
-            os.remove(path)
-
-    db.execute("DELETE FROM items WHERE id = ?", (item_id,))
-    db.commit()
-    db.close()
-    return jsonify({"deleted": item_id})
-
-
-# ── OUTFITS ───────────────────────────────────────────────────────────────────
-@app.route("/api/outfits", methods=["GET"])
-def get_outfits():
-    return jsonify({"outfits": []})
-
-@app.route("/api/outfits", methods=["POST"])
-def save_outfit():
-    data = request.json
-    return jsonify({"saved": True, "outfit": data})
-
-
-# ── GENERATE ──────────────────────────────────────────────────────────────────
-@app.route("/api/generate", methods=["POST"])
-def generate_outfit():
-    data = request.json
-    return jsonify({"suggested_outfit": []})
-
-
-# ── SERVE IMAGES ──────────────────────────────────────────────────────────────
-@app.route("/api/uploads/<filename>")
-def serve_upload(filename):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)

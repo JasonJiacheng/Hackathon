@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useRef } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 
 const Generate = () => {
     const [nav, setNav] = useState(false);

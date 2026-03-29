@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import DefaultImage from "../assets/closet.png";
+import { apiPost } from '../api.js';
 
 const Upload = () => {
   const [nav, setNav] = useState(false);
@@ -32,13 +33,7 @@ const Upload = () => {
      data.append('image', file);
 
      // Send POST request to backend
-     fetch('http://localhost:3000/api/upload', {  // send post request to /api/upload
-        method: 'POST',
-        body: data
-    }).then(res => {
-        console.log("Raw response:", res);
-        return res.json(); // convert to JSON
-    })
+     apiPost('/api/upload', data)
     .then(data => console.log('Upload successful', data))
     .catch(err => console.error('Upload failed', err));
   }
@@ -66,7 +61,7 @@ const Upload = () => {
         </div>
 
         {/* Right panel */}
-        <div className="bg-black pr-4 py-8 grid grid-rows-2 gap-4">2
+        <div className="bg-black pr-4 py-8 grid grid-rows-2 gap-4">
 
           {/* Form grid of 2 columns */}
           <div className="bg-black grid grid-cols-2 gap-4 text-white">
