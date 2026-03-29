@@ -13,7 +13,9 @@ from colourSuggestion import getValidColours
 def main(): #main is just for testing
     uploads = []
     descriptions = [("Trousers", "Blue"), ("T-shirt", "Red")]
-    recommend(uploads, descriptions, True)
+    output = recommend(uploads, descriptions, True)
+    print(output)
+    draw_model(descriptions, output, "test.png")
     
 def recommend(uploads, descriptions, is_smart): #is_smart is a toggle on/off switch bool
     client = OpenAI(
@@ -104,5 +106,5 @@ def getWeather(city):
     desc = data["weather"][0]["main"].lower()
     return "temperature: "+ str(temp) + " degrees, " + " description: " + desc
 
-
+main()
 
