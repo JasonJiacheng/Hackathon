@@ -70,7 +70,7 @@ const Upload = () => {
       </div>
 
       {/* Main grid */}
-      <div className="grid grid-cols-2 h-130">
+      <div className="grid grid-cols-2 h-[80vh]">
 
         {/* Left panel */}
         <div className="bg-black py-4 px-8">
@@ -79,7 +79,7 @@ const Upload = () => {
         </div>
 
         {/* Right panel */}
-        <div className="bg-black pr-4 py-8 grid grid-rows-2 gap-4">
+        <div className="bg-black pr-4 flex flex-col justify-center items-center gap-6">
 
           {/* Form grid of 2 columns */}
           <div className="bg-black grid grid-cols-2 gap-4 pr-16 text-white">
@@ -89,7 +89,7 @@ const Upload = () => {
           
 
           {/* Upload button */}
-          <div className="flex flex-col justify-center items-center  bg-black ">
+          <div className="flex flex-col justify-center items-center  bg-black">
             <form id = "form" onSubmit = {handleSubmit} encType="multipart/form-data" className = "flex flex-row justify-center items-center gap-4">
            
                 {/* to show */}
