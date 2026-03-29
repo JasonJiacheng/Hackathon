@@ -14,23 +14,23 @@ const Clothes = [
   { id: 8, name: 'Brown Boots', type: 'boots', colour: '#a52a2a' },
 ];
 
-const Categories = ['all', 'shoes', 'shirts', 'outerwear', 't-shirts', 'shorts', 'trousers', "dresses"];
+const Categories = ['All', 'Shoes', 'Shirts', 'Outwear', 'T-shirts', 'Shorts', 'Trousers', "Dresses", "Skirt"];
 
 const Colours = {
     all : "All",
-    "#ff0000": "Red",
-    "#ffff00": "Yellow",
-    "#0000ff": "Blue",
-    "#00ff00": "Green",
-    "#ffa500": "Orange",
-    "#800080": "Purple",
-    "#ffc0cb": "Pink",
-    "#a52a2a": "Brown",
-    "#000000": "Black",
-    "#ffffff": "White",
-    "#808080": "Grey",
-    "#000080": "Navy",
-    "#6b6b2a": "Olive",
+    "#ff0000": "red",
+    "#ffff00": "yellow",
+    "#0000ff": "blue",
+    "#00ff00": "green",
+    "#ffa500": "orange",
+    "#800080": "purple",
+    "#ffc0cb": "pink",
+    "#a52a2a": "brown",
+    "#000000": "black",
+    "#ffffff": "white",
+    "#808080": "grey",
+    "#000080": "navy",
+    "#6b6b2a": "olive",
 }
 
 const Library = () => {
@@ -38,8 +38,8 @@ const Library = () => {
   const [nav, setNav] = useState(false);
 
   // Sliders
-  const [category, setCategory] = useState('all');
-  const [color, setColor] = useState('all');
+  const [category, setCategory] = useState('All');
+  const [color, setColor] = useState('All');
   const [search, setSearch] = useState('');
 
   const handleNav = () => setNav(!nav);
@@ -49,7 +49,7 @@ const Library = () => {
 
   // Fetch them on load using the urls we have created from the server (we need the posrt of the server)
   useEffect(() => {
-    fetch('http://localhost:3000/api/images')
+    fetch('http://localhost:5000/api/images')
     .then(res => res.json())
     .then(data => setImages(data))
     .catch(err => console.log(err))
@@ -114,17 +114,18 @@ const Library = () => {
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
             {images.length > 0 ?   // Ensure we have at least one image
-            images.filter (item => {
-                const type = item.name.split('-')[0];
+            images.filter(item => {
+              const matchesCategory =
+                category === 'All' || item.category.toLowerCase() === category.toLowerCase();
 
-                const matchesCategory =
-                  category === 'all' || type === category;
+              const matchesColour =
+                color === 'All' || item.detected_colour.toLowerCase() === color.toLowerCase();
 
-                const matchesSearch =
-                  item.name.toLowerCase().includes(search.toLowerCase());
+              const matchesSearch =
+                item.name.toLowerCase().includes(search.toLowerCase());
 
-                return matchesCategory && matchesSearch; 
-              })
+              return matchesCategory && matchesColour && matchesSearch;
+            })
             .map(item => (
               <div
                 key={item.name}
